@@ -26,39 +26,27 @@ This template uses the new Next.js App Router. This includes support for enhance
 
 ## Getting Started
 
-During the deployment, Vercel will prompt you to create a new Postgres database. This will add the necessary environment variables to your project.
-
-Inside the Vercel Postgres dashboard, create a table based on the schema defined in this repository.
-
-```
-CREATE TYPE status AS ENUM ('active', 'inactive', 'archived');
-
-CREATE TABLE products (
-  id SERIAL PRIMARY KEY,
-  image_url TEXT NOT NULL,
-  name TEXT NOT NULL,
-  status status NOT NULL,
-  price NUMERIC(10, 2) NOT NULL,
-  stock INTEGER NOT NULL,
-  available_at TIMESTAMP NOT NULL
-);
+1. 准备Postgres数据库。
+2. 安装依赖
+   
+```bash
+  pnpm install
 ```
 
-Then, uncomment `app/api/seed.ts` and hit `http://localhost:3000/api/seed` to seed the database with products.
-
-Next, copy the `.env.example` file to `.env` and update the values. Follow the instructions in the `.env.example` file to set up your GitHub OAuth application.
+3. 准备环境变量，修改`.env.example`文件为`.env`文件，同时修改里面的的环境变量
+4. 初始化数据库，依次执行下列命令：
 
 ```bash
-npm i -g vercel
-vercel link
-vercel env pull
+ pnpm run db:generate # 使用 drizzle-kit 工具生成数据库迁移文件
+ pnpm run db:migrate # 运行 migrate.ts 文件，以执行数据库迁移操作
+ pnpm run db:seed # 将预定义的数据插入数据库，生成测试数据
 ```
 
-Finally, run the following commands to start the development server:
+5. 启动应用
+   
+```bash
+  pnpm dev
+```
 
-```
-pnpm install
-pnpm dev
-```
 
 You should now be able to access the application at http://localhost:3000.
